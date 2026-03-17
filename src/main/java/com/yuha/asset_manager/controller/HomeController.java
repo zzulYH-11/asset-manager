@@ -1,4 +1,4 @@
-package controller;
+package com.yuha.asset_manager.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,5 +14,15 @@ public class HomeController {
     @GetMapping("/news")
     public String news() {
         return "news";
+    }
+
+    @GetMapping("/indicators")
+    public String indicators() {
+        return "indicators";
+    }
+
+    @GetMapping("/assets")
+    public String assets() {
+        return "assets";
     }
 }
