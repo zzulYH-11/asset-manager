@@ -22,14 +22,19 @@
 
 <main class="max-w-md mx-auto px-4 py-6">
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6"
+         th:with="totalSum=${#aggregates.sum(assets.![price * quantity])}">
+
         <h2 class="text-sm font-semibold text-gray-400 mb-4 uppercase tracking-wider text-center">보유 비중 (Portfolio)</h2>
         <div class="w-full max-w-[250px] mx-auto">
             <canvas id="assetChart"></canvas>
         </div>
         <div class="mt-4 text-center">
             <p class="text-xs text-gray-400 font-medium">총 자산 평가액</p>
-            <p class="text-2xl font-black text-gray-800">₩ 124,500,000</p>
+            <p class="text-2xl font-black text-gray-800"
+               th:text="${totalSum != null} ? '$ ' + ${#numbers.formatInteger(totalSum, 3, 'COMMA')} : '$ 0'">
+                $ 0
+            </p>
         </div>
     </div>
 
@@ -37,36 +42,38 @@
         <div class="p-4 border-b border-gray-50 bg-gray-50/50">
             <h2 class="font-bold text-gray-700">종합 잔고</h2>
         </div>
+
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
                 <thead class="bg-gray-50 text-gray-500 uppercase text-[10px] font-bold">
-                <tr>
-                    <th class="px-4 py-3">종목이름</th>
-                    <th class="px-4 py-3">가격</th>
-                    <th class="px-4 py-3 text-right">수량</th>
-                </tr>
+                    <tr>
+                        <th class="px-4 py-3">종목(Ticker)</th>
+                        <th class="px-4 py-3">현재가</th>
+                        <th class="px-4 py-3 text-right">보유수량</th>
+                    </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-4 py-4 font-bold text-gray-800">삼성전자</td>
-                    <td class="px-4 py-4 text-gray-600">₩ 75,000</td>
-                    <td class="px-4 py-4 text-right font-medium">100</td>
-                </tr>
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-4 py-4 font-bold text-gray-800">애플(AAPL)</td>
-                    <td class="px-4 py-4 text-gray-600">₩ 245,000</td>
-                    <td class="px-4 py-4 text-right font-medium">50</td>
-                </tr>
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-4 py-4 font-bold text-gray-800">비트코인</td>
-                    <td class="px-4 py-4 text-gray-600">₩ 102M</td>
-                    <td class="px-4 py-4 text-right font-medium">0.85</td>
-                </tr>
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-4 py-4 font-bold text-gray-800">현금(KRW)</td>
-                    <td class="px-4 py-4 text-gray-600">₩ 1.0</td>
-                    <td class="px-4 py-4 text-right font-medium">5,000,000</td>
-                </tr>
+
+            <tbody class="divide-y divide-gray-100">
+            <tr th:each="asset : ${assets}" class="hover:bg-gray-50 transition">
+
+                <td class="px-4 py-4 font-bold text-gray-800" th:text="${asset.ticker}">
+                    삼성전자
+                </td>
+
+                <td class="px-4 py-4 text-gray-600">
+                    $ <span th:text="${#numbers.formatInteger(asset.price, 3, 'COMMA')}">0</span>
+                </td>
+
+                <td class="px-4 py-4 text-right font-medium text-blue-600" th:text="${asset.quantity}">
+                    0
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(assets)}">
+                <td colspan="3" class="px-4 py-10 text-center text-gray-400">
+                    아직 등록된 자산이 없습니다.
+                </td>
+            </tr>
                 </tbody>
             </table>
         </div>
@@ -74,14 +81,29 @@
 
 </main>
 
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // 서버에서 넘어온 assets 리스트를 JS 객체 배열로 변환
+    const assetsData = /*[[${assets}]]*/ [];
+    /*]]>*/
+
+    // 차트에 필요한 라벨(Ticker)과 데이터(비중 계산용 금액) 추출
+    const labels = assetsData.map(asset => asset.ticker);
+
+    // 비중을 계산하기 위해 (가격 * 수량) 값을 추출
+    const dataValues = assetsData.map(asset => asset.price * asset.quantity);
+
+    // 차트 그리기 로직 시작...
+</script>
+
 <script>
     const ctx = document.getElementById('assetChart').getContext('2d');
     new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['삼성전자', '애플', '비트코인', '현금'],
+            labels: labels,
             datasets: [{
-                data: [35, 25, 30, 10], // 자산 비중 예시
+                data: dataValues,
                 backgroundColor: [
                     '#2563eb', // 파랑
                     '#10b981', // 초록
