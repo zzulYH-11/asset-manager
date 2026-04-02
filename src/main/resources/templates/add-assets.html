@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>자산 추가 - Asset Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* 클래스가 no-spinner인 요소에서만 화살표 제거 */
+        /* Chrome, Safari, Edge, Opera */
+        .no-spinner::-webkit-outer-spin-button,
+        .no-spinner::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        .no-spinner[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<header class="bg-white border-b h-16 flex items-center px-4 max-w-md mx-auto">
+    <button onclick="history.back()" class="text-gray-600"><i class="fa-solid fa-arrow-left text-xl"></i></button>
+    <h1 class="ml-4 text-xl font-bold text-gray-800">새 자산 등록</h1>
+</header>
+
+<main class="max-w-md mx-auto px-4 py-8">
+    <form th:action="@{/assets/add}" method="post" class="bg-white p-6 rounded-2xl shadow-sm space-y-5">
+        <div>
+            <label class="text-sm font-bold text-gray-500 block mb-2">종목명(Ticker)</label>
+            <input type="text" name="ticker" placeholder="예: AAPL, BTC" class="w-full border rounded-xl p-4 focus:ring-2 focus:ring-blue-500 outline-none" required>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="text-sm font-bold text-gray-500 block mb-2">현재가 ($)</label>
+                <input type="number" name="price" placeholder="0" min="0" step="any"
+                       oninput="if(this.value < 0) this.value = Math.abs(this.value)"
+                       class="no-spinner w-full border rounded-xl p-4 outline-none" required>
+            </div>
+            <div>
+                <label class="text-sm font-bold text-gray-500 block mb-2">보유수량</label>
+                <input type="number" name="quantity" placeholder="0" min="0" step="any"
+                       oninput="if(this.value < 0) this.value = Math.abs(this.value)"
+                       class="w-full border rounded-xl p-4 outline-none" required>
+            </div>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl hover:bg-blue-700 transition shadow-lg shadow-blue-200">
+            자산 저장하기
+        </button>
+    </form>
+</main>
+</body>
+</html>

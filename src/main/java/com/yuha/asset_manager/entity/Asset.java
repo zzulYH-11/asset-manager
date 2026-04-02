@@ -12,9 +12,10 @@ import lombok.Setter;
 public class Asset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int stockId;
+    private long stockId;
 
     private String ticker;
+    //private String stockName;
     private int price;
     private int quantity;
 
