@@ -17,10 +17,11 @@ public class AssetService {
 
     public void saveAsset(Asset asset) {
         Asset existingAsset = assetRepository.findByTicker(asset.getTicker());
-        if(existingAsset != null){
+        if (existingAsset != null) {
             throw new RuntimeException("이미 존재하는 자산입니다. : " + asset.getTicker());
+        } else {
+            assetRepository.save(asset);
         }
-        assetRepository.save(asset);
     }
 
     public void updateQuantity(long id, int quantity) {
