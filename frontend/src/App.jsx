@@ -6,7 +6,8 @@ import { Doughnut } from 'react-chartjs-2';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const MEMBER_ID = '1'; // MVP 임시 회원 ID (헤더 전송용)
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+// API_BASE는 순수 호스트 주소(포트까지)만 관리하여 추후 /api2 등 유연한 확장을 지원하도록 설계
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 export default function App() {
   // Navigation active tab
@@ -62,11 +63,11 @@ export default function App() {
     }, 3000);
   };
 
-  // 1. GET /stocks (보유 자산 목록 조회)
+  // 1. GET /api/stocks (보유 자산 목록 조회)
   const fetchAssets = async () => {
     setLoadingStocks(true);
     try {
-      const res = await fetch(`${API_BASE}/stocks`, {
+      const res = await fetch(`${API_BASE}/api/stocks`, {
         headers: {
           'Accept': 'application/json',
           'X-Member-Id': MEMBER_ID
@@ -74,7 +75,6 @@ export default function App() {
       });
       const result = await res.json();
       if (result.success) {
-        // DTO 구조(FindAllStockResponse.stockList)를 분석하여 안전하게 추출
         const fetchedStocks = result.data?.stockList || (Array.isArray(result.data) ? result.data : []);
         setStocks(fetchedStocks);
       } else {
@@ -88,7 +88,7 @@ export default function App() {
     }
   };
 
-  // 2. POST /stocks (새 자산 등록)
+  // 2. POST /api/stocks (새 자산 등록)
   const handleAddStock = async (e) => {
     e.preventDefault();
     if (!newTicker || !newPrice || !newQuantity) return;
@@ -103,7 +103,7 @@ export default function App() {
     }
 
     try {
-      const res = await fetch(`${API_BASE}/stocks`, {
+      const res = await fetch(`${API_BASE}/api/stocks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,10 +134,10 @@ export default function App() {
     }
   };
 
-  // 3. DELETE /stocks/{id} (자산 삭제) - DTO의 stockId 값을 타겟팅
+  // 3. DELETE /api/stocks/{id} (자산 삭제)
   const handleDeleteStock = async (id, ticker) => {
     try {
-      const res = await fetch(`${API_BASE}/stocks/${id}`, {
+      const res = await fetch(`${API_BASE}/api/stocks/${id}`, {
         method: 'DELETE',
         headers: {
           'Accept': 'application/json',
@@ -157,11 +157,11 @@ export default function App() {
     }
   };
 
-  // 4. GET /news (거시경제 뉴스 조회)
+  // 4. GET /api/news (거시경제 뉴스 조회)
   const fetchNews = async () => {
     setLoadingNews(true);
     try {
-      const res = await fetch(`${API_BASE}/news`, {
+      const res = await fetch(`${API_BASE}/api/news`, {
         headers: {
           'Accept': 'application/json',
           'X-Member-Id': MEMBER_ID
@@ -180,11 +180,11 @@ export default function App() {
     }
   };
 
-  // 5. GET /indicators (글로벌 시장 지수 조회)
+  // 5. GET /api/indicators (글로벌 시장 지수 조회)
   const fetchIndicators = async () => {
     setLoadingIndicators(true);
     try {
-      const res = await fetch(`${API_BASE}/indicators`, {
+      const res = await fetch(`${API_BASE}/api/indicators`, {
         headers: {
           'Accept': 'application/json',
           'X-Member-Id': MEMBER_ID
