@@ -12,6 +12,6 @@ public class WebCorsConfig implements WebMvcConfigurer {
                 .allowedOriginPatterns("*") // 또는 Vercel 도메인 명시 ("https://*.vercel.app")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true);
+                .allowCredentials(false);
     }
 }
