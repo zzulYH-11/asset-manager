@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/stocks")
 @RequiredArgsConstructor
 public class StockController {
 
-    private final StockService stockService;$
+    private final StockService stockService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<FindAllStockResponse>> getAllStocks(@RequestHeader("X-Member-Id") long memberId) {
