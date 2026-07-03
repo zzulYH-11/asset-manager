@@ -25,7 +25,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version: 20  # Vite 8 및 React 19 환경에 최적화된 안정적인 Node.js 20 버전으로 상향 조정
         cache: 'npm'
         cache-dependency-path: frontend/package-lock.json
 

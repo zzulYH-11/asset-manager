@@ -33,4 +33,4 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build and Test with Gradle
-      run: ./gradlew build
+      run: ./gradlew build -x test  # 가상 환경에 실제 DB(MySQL) 커넥션 정보가 없어 테스트 기동 시 일어나는 크래시 방지를 위해 테스트 제외 빌드 설정 적용
