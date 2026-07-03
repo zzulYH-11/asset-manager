@@ -1,4 +1,4 @@
-package com.yuha.asset_manager.DTO;
+package com.yuha.asset_manager.DTO.stock;
 
 import java.util.ArrayList;
 import java.util.List;

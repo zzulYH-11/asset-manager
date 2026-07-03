@@ -6,8 +6,35 @@ import { Doughnut } from 'react-chartjs-2';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const MEMBER_ID = '1'; // MVP 임시 회원 ID (헤더 전송용)
-// API_BASE는 순수 호스트 주소(포트까지)만 관리하여 추후 /api2 등 유연한 확장을 지원하도록 설계
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
+// HTML 태그 및 특수 기호 정제 헬퍼 함수
+const cleanText = (text) => {
+  if (!text) return '';
+  return text
+    .replace(/<[^>]*>/g, '') // HTML 태그 제거
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&#39;/g, "'")
+    .replace(/&#039;/g, "'");
+};
+
+// 날짜 포맷팅 헬퍼 함수
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return dateString;
+  return date.toLocaleDateString('ko-KR', {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
 
 export default function App() {
   // Navigation active tab
@@ -168,12 +195,19 @@ export default function App() {
         }
       });
       const result = await res.json();
-      if (result.success) {
-        setNewsList(result.data || []);
+      
+      // 백엔드가 공통 Wrapper DTO 없이 네이버 원본 구조(items 배열 포함)를 그대로 반환하는 경우 유연하게 대응
+      if (result.items && Array.isArray(result.items)) {
+        setNewsList(result.items);
+      } else if (result.success && result.data?.items) {
+        setNewsList(result.data.items);
+      } else if (result.success && Array.isArray(result.data)) {
+        setNewsList(result.data);
       } else {
         showToast(result.error?.message || '뉴스를 불러오지 못했습니다.', 'danger');
       }
     } catch (err) {
+      showToast('뉴스 데이터를 가져오는 중 통신 오류가 발생했습니다.', 'danger');
       console.error('Fetch News Error:', err);
     } finally {
       setLoadingNews(false);
@@ -404,16 +438,24 @@ export default function App() {
               </div>
             ) : newsList.length > 0 ? (
               <div className="news-list">
-                {newsList.map(news => (
-                  <div key={news.id} className="news-card">
-                    <div className="news-meta">
-                      <span className="news-source">{news.source}</span>
-                      <span>•</span>
-                      <span>{news.time}</span>
+                {newsList.map((news, idx) => (
+                  <a 
+                    key={idx} 
+                    href={news.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    style={{ textDecoration: 'none', display: 'block' }}
+                  >
+                    <div className="news-card">
+                      <div className="news-meta">
+                        <span className="news-source">네이버 뉴스</span>
+                        <span>•</span>
+                        <span>{formatDate(news.pubDate)}</span>
+                      </div>
+                      <h3 className="news-title">{cleanText(news.title)}</h3>
+                      <p className="news-summary">{cleanText(news.description)}</p>
                     </div>
-                    <h3 className="news-title">{news.title}</h3>
-                    <p className="news-summary">{news.summary}</p>
-                  </div>
+                  </a>
                 ))}
               </div>
             ) : (

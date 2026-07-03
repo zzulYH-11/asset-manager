@@ -1,6 +1,6 @@
 package com.yuha.asset_manager.controller;
 
-import com.yuha.asset_manager.DTO.*;
+import com.yuha.asset_manager.DTO.stock.*;
 import com.yuha.asset_manager.common.DTO.ApiResponse;
 import com.yuha.asset_manager.service.StockService;
 import jakarta.validation.Valid;

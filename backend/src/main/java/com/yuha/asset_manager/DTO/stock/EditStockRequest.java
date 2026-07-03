@@ -1,4 +1,4 @@
-package com.yuha.asset_manager.DTO;
+package com.yuha.asset_manager.DTO.stock;
 
 
 import jakarta.validation.constraints.Min;
