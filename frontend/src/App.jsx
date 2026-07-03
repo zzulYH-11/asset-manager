@@ -185,12 +185,12 @@ export default function App() {
   };
 
   // 4. GET /api/news (거시경제 뉴스 조회)
-  // 네이버 검색 API 연동을 위해 쿼리 파라미터(?query=미국 경제 시황)를 인코딩하여 전송
+  // 백엔드 컨트롤러가 요구하는 필수 검색어 파라미터명인 'keyWord'에 맞춰 전송
   const fetchNews = async () => {
     setLoadingNews(true);
     try {
       const searchQuery = encodeURIComponent('미국 경제 시황');
-      const res = await fetch(`${API_BASE}/api/news?query=${searchQuery}`, {
+      const res = await fetch(`${API_BASE}/api/news?keyWord=${searchQuery}`, {
         headers: {
           'Accept': 'application/json',
           'X-Member-Id': MEMBER_ID
