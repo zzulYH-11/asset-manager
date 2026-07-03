@@ -185,11 +185,11 @@ export default function App() {
   };
 
   // 4. GET /api/news (거시경제 뉴스 조회)
-  // 백엔드 컨트롤러가 요구하는 필수 검색어 파라미터명인 'keyWord'에 맞춰 전송
+  // 검색 키워드를 '미국 증시 시황'으로 최적화하여 네이버 API 조회
   const fetchNews = async () => {
     setLoadingNews(true);
     try {
-      const searchQuery = encodeURIComponent('미국 경제 시황');
+      const searchQuery = encodeURIComponent('미국 증시 시황');
       const res = await fetch(`${API_BASE}/api/news?keyWord=${searchQuery}`, {
         headers: {
           'Accept': 'application/json',
