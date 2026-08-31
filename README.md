@@ -56,13 +56,10 @@ project
 ---
 
 ## 📚 Documentation
-* [프로젝트 개요 (Overview)](docs/01-project-overview.md)
-* [MVP 스펙정의 (MVP Spec)](docs/02-mvp.md)
-* [사용자 시나리오 (User Scenarios)](docs/03-user-scenarios.md)
-* [API 명세서 (API Spec)](docs/04-api-spec.md)
 * [컨벤션 정의 (Convention)](docs/05-convention.md)
 * [의사결정 기록 (Decision Log)](docs/06-decisions.md)
-* [시스템 아키텍처 (Architecture)](docs/07-architecture.md)
+
+> **Note:** 상세 기획 및 사용자 시나리오는 추후 [Notion]으로 이관될 예정이며, API 명세서는 [Swagger]를 통해 자동화하여 제공될 예정입니다.
 
 ---
 
