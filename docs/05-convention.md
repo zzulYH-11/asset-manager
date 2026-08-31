@@ -151,3 +151,19 @@ frontend/src
   * Backend (Java) ➡️ **4 spaces**
 * **줄바꿈 한계**: 한 줄은 가독성을 위해 **120자**를 기준으로 꺾어 씁니다.
 * **주석**: 메서드가 왜 구현되었는지 목적(Why)을 위주로 코드 상단에 한글 주석을 부드럽게 추가합니다. (기본 리액트 컴포넌트나 스프링 라이프사이클 같은 명백한 코드에는 주석을 최소화합니다.)
+
+## Git Branching Strategy (Git Flow Lite)
+* `main`: 상용(Production) 배포용 브랜치
+* `develop`: 배포 전 로컬/스테이징 통합 테스트용 완충 브랜치
+* `feature/{기능명}`: 개별 기능 개발 및 리팩토링 브랜치 (작업 완료 후 develop으로 병합)
+* `fix/{이슈명}`: 버그 수정 브랜치
+
+## Git Branching Strategy (Git Flow Lite)
+* `main`: 상용(Production) 배포용 브랜치
+* `develop`: 배포 전 로컬/스테이징 통합 테스트용 완충 브랜치
+* `feature/{기능명}`: 개별 기능 개발 및 리팩토링 브랜치 (작업 완료 후 develop으로 병합)
+* `fix/{이슈명}`: 버그 수정 브랜치
+
+### Merge Strategy
+* `feature` -> `develop`: **Squash and Merge** (작업 내역을 단일 커밋으로 압축하여 히스토리 청결 유지)
+* `develop` -> `main`: **Create a Merge Commit (`--no-ff`)** (배포 시점을 시각적 노드로 명확히 기록)
