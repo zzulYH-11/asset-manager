@@ -55,39 +55,6 @@ project
 
 ---
 
-## 📚 Documentation
-* [컨벤션 정의 (Convention)](docs/05-convention.md)
-* [의사결정 기록 (Decision Log)](docs/06-decisions.md)
+## 🏗 System Architecture
 
-> **Note:** 상세 기획 및 사용자 시나리오는 추후 [Notion]으로 이관될 예정이며, API 명세서는 [Swagger]를 통해 자동화하여 제공될 예정입니다.
-
----
-
-## 🚀 Getting Started
-
-로컬 개발 환경을 세팅하고 실행하기 위한 가이드라인입니다. 모노레포 구조이므로 프런트엔드와 백엔드를 각각 독립된 터미널에서 실행해 주세요.
-
-### Prerequisites
-* Node.js (v18 이상 권장)
-* Java JDK 17
-
-### Environment Variables (.env)
-프런트엔드 폴더(`frontend/`) 루트에 `.env` 파일을 생성하고 다음 변수를 입력합니다.
-```env
-VITE_API_URL=http://localhost:8080
-```
-
-### 1. Frontend Execution
-```bash
-cd frontend
-npm install
-npm run dev
-```
-* 로컬 서버 실행: `http://localhost:5173`
-
-### 2. Backend Execution
-```bash
-cd backend
-./gradlew bootRun
-```
-* 로컬 API 서버 실행: `http://localhost:8080`
+> 추후 아키텍처 다이어그램이 추가될 예정입니다.
